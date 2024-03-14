@@ -1,0 +1,75 @@
+int midx = (topLeftFront->x + bottomRightBack->x) / 2;
+int midy = (topLeftFront->y + bottomRightBack->y) / 2;
+int midz = (topLeftFront->z + bottomRightBack->z) / 2;
+
+#TopLeftFront
+
+topLeftFront->x
+topLeftFront->y
+topLeftFront->z
+midx
+midy
+midz
+
+#TopRightFront
+
+midx + 1
+topLeftFront->y
+topLeftFront->z
+bottomRightBack->x
+midy
+midz
+
+#BottomRightFront
+
+midx + 1
+midy + 1
+topLeftFront->z
+bottomRightBack->x
+bottomRightBack->y
+midz
+
+#BottomLeftFront
+
+topLeftFront->x
+midy + 1
+topLeftFront->z
+midx
+bottomRightBack->y
+midz
+
+#TopLeftBottom
+
+topLeftFront->x
+topLeftFront->y
+midz + 1
+midx
+midy
+bottomRightBack->z
+
+#TopRightBottom
+
+midx + 1
+topLeftFront->y
+midz + 1
+bottomRightBack->x
+midy
+bottomRightBack->z
+
+#BottomRightBack
+
+midx + 1
+midy + 1
+midz + 1
+bottomRightBack->x
+bottomRightBack->y
+bottomRightBack->z
+
+#BottomLeftBack
+
+topLeftFront->x
+midy + 1
+midz + 1
+midx
+bottomRightBack->y
+bottomRightBack->z
