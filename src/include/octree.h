@@ -13,7 +13,7 @@ typedef struct {
 
 void voxel_obj_init( VOXEL_OBJ *voxobj, int point_c );
 
-void voxel_obj_update( VOXEL_OBJ *voxobj, POINT *points );
+void voxel_obj_update( VOXEL_OBJ *voxobj, POINT *points, int point_c );
 
 void voxel_obj_destroy( VOXEL_OBJ *voxobj );
 

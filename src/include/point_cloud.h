@@ -9,7 +9,7 @@ typedef struct {
   VOXEL_OBJ voxobj;
   MEMPOOL pool;
   int point_c;
-  POINT *point_cloud;
+  POINT *points;
 } POINT_CLOUD;
 
 void point_cloud_init( POINT_CLOUD *cloud, int point_c );

@@ -1,14 +1,24 @@
 #include <stdio.h>
 //
 #include "include/mempool.h"
+#include "stdlib.h"
 
 int main() {
-  MEMPOOL pool;
-  mempool_init(&pool, 3);
-  int *a = (int*) mempool_take(&pool, 4);
+  MEMPOOL pool1;
+  MEMPOOL *pool2;
+  printf("%x %x\n", (void*)&pool1, (void*)pool2);
+  mempool_init(&pool1, 10);
+  mempool_init(pool2, 10);
+  printf("%x %x\n", (void*)&pool1, (void*)pool2);
+  int *a, *b;
+  a = mempool_take(&pool1, 5);
   if (!a)
-    printf("память\n");
-  *a = 6;
+    return 1;
+  *a = 5;
   printf("%d\n", *a);
-  mempool_destroy(&pool);
+  b = mempool_take(pool2, 5);
+  if (!b)
+    return 1;
+  *b = 6;
+  printf("%d\n", *b);
 }

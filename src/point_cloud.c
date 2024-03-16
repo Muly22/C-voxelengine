@@ -1,4 +1,5 @@
 #include "include/point_cloud.h"
+#include "include/macros.h"
 
 void point_cloud_init( POINT_CLOUD *cloud, int point_c ) {
   cloud->point_c = point_c;
