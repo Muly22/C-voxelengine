@@ -1,18 +1,25 @@
+#include <stdlib.h>
+//
 #include "include/point_cloud.h"
-#include "include/macros.h"
 
 void point_cloud_init( POINT_CLOUD *cloud, int point_c ) {
   cloud->point_c = point_c;
-  mempool_init( &(cloud->pool), sizeof(POINT) * point_c );
+  cloud->points = malloc( sizeof(POINT) * point_c );
   voxel_obj_init( &(cloud->voxobj), point_c );
   cloud->id = 0; /* исправить */
 }
 
-void point_cloud_resize( POINT_CLOUD *cloud, int point_c ) {
-  mempool_resize( &(cloud->pool), sizeof(POINT) * point_c );
+int point_cloud_resize( POINT_CLOUD *cloud, int point_c ) {
+  if (!realloc(cloud->points, sizeof(POINT) * point_c ))
+    return 1;
+  return 0;
+}
+
+void point_cloud_update( POINT_CLOUD *cloud ) {
+  voxel_obj_update(&(cloud->voxobj), cloud->points, cloud->point_c);
 }
 
 void point_cloud_destroy( POINT_CLOUD *cloud ) {
-  mempool_destroy(&(cloud->pool));
+  free(cloud->points);
   voxel_obj_destroy(&(cloud->voxobj));
 }

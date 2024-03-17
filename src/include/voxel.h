@@ -7,7 +7,6 @@
 typedef struct {
   VECTOR_I xyz;
   VECTOR_I lbh;
-  COLOR    clr;
 } VOXEL; 
 
 #endif

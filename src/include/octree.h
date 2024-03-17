@@ -1,12 +1,10 @@
 #ifndef OCTREE_H
 #define OCTREE_H
 
-#include "mempool.h"
 #include "point.h"
 #include "voxel.h"
 
 typedef struct {
-  MEMPOOL pool;
   int voxel_c;
   VOXEL *voxels;
 } VOXEL_OBJ;

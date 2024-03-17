@@ -1,7 +1,9 @@
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
 //
 #include "include/octree.h"
-#include "include/macros.h"
 
 static POINT point_orig( const POINT *points, int point_c ) {
   POINT res = {0};
@@ -24,20 +26,51 @@ static void point_norm( POINT *points, const POINT *orig, int point_c) {
   }
 }
 
+static int point_ln( POINT *points, int point_c ) {
+  int res = -1;
+  double max = fabs(points[0].pos.x);
+  for (int i = 0; i < point_c; i++) {
+    if (fabs(points[i].pos.x) > max) {
+      max = points[i].pos.x;
+    }
+    if (fabs(points[i].pos.y) > max) {
+      max = points[i].pos.y;
+    }
+    if (fabs(points[i].pos.z) > max) {
+      max = points[i].pos.z;
+    }
+  }
+  if (!(int)max)
+    return -1;
+  res = (int)log2(max) + 1;
+  return res;
+}
+
+static void octree( VOXEL_OBJ *voxobj, POINT *points, POINT *orig, int point_c, int depth, int x, int y, int z, int l, int b, int h) {
+  //printf("%d %d %f %f\n", depth, x, orig->pos.x, points[0].pos.x);
+}
+
 void voxel_obj_init( VOXEL_OBJ *voxobj, int point_c ) {
   voxobj->voxel_c = 0;
-  mempool_init( &(voxobj->pool), sizeof(VOXEL) * point_c );
+  voxobj->voxels = malloc( sizeof(VOXEL) * point_c );
 }
 
 void voxel_obj_update( VOXEL_OBJ *voxobj, POINT *points, int point_c ) {
   POINT orig = point_orig(points, point_c);
   POINT *copy = malloc(sizeof(POINT) * point_c);
-  memcpy(copy, points, point_c);
+  for (int i = 0; i < point_c; i++) {
+    copy[i].pos.x = points[i].pos.x;
+    copy[i].pos.y = points[i].pos.y;
+    copy[i].pos.z = points[i].pos.z;
+  }
+  //memcpy(copy, points, point_c);
   point_norm(copy, &orig, point_c);
-  octree(voxobj, copy, &orig, point_c, );
+  int depth = point_ln(copy, point_c);
+  int bord = (int)(powf(2, depth) + 0.5f);
+  octree(voxobj, copy, &orig, point_c, depth, -bord, -bord, -bord, bord, bord, bord);
   free(copy);
 }
 
 void voxel_obj_destroy( VOXEL_OBJ *voxobj ) {
-  mempool_destroy(&(voxobj->pool));
+  free(voxobj->voxels);
 }
