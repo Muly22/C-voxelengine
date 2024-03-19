@@ -31,13 +31,13 @@ static int point_ln( POINT *points, int point_c ) {
   double max = fabs(points[0].pos.x);
   for (int i = 0; i < point_c; i++) {
     if (fabs(points[i].pos.x) > max) {
-      max = points[i].pos.x;
+      max = fabs(points[i].pos.x);
     }
     if (fabs(points[i].pos.y) > max) {
-      max = points[i].pos.y;
+      max = fabs(points[i].pos.y);
     }
     if (fabs(points[i].pos.z) > max) {
-      max = points[i].pos.z;
+      max = fabs(points[i].pos.z);
     }
   }
   if (!(int)max)
@@ -47,8 +47,7 @@ static int point_ln( POINT *points, int point_c ) {
 }
 
 static void octree( VOXEL_OBJ *voxobj, POINT *points, POINT *orig, int point_c, int depth, int x, int y, int z, int l, int b, int h) {
-  //printf("%d %d %f %f\n", depth, x, orig->pos.x, points[0].pos.x);
-  //printf("%d %d %d %d %d %d\n", x,y,z,l,b,h); 
+  //printf("%d: %d %d %d %d %d %d\n", depth, x,y,z,l,b,h); 
   int count = 0;
   for (int i = 0; i < point_c; i++) {
     if (points[i].pos.x < l &&
@@ -61,8 +60,9 @@ static void octree( VOXEL_OBJ *voxobj, POINT *points, POINT *orig, int point_c, 
       //printf("%d\n", count);
     }
   }
-  if (!count)
+  if (!count) {
     return;
+  }
   else if (count == 1 || !depth) {
     printf("%d %d %d %d %d %d\n", x,y,z,l,b,h); 
   }
