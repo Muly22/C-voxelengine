@@ -6,6 +6,7 @@
 
 typedef struct {
   int id;
+  MATERIAL material;
   VOXEL_OBJ voxobj;
   int point_c;
   POINT *points;

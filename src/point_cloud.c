@@ -7,6 +7,7 @@ void point_cloud_init( POINT_CLOUD *cloud, int point_c ) {
   cloud->points = malloc( sizeof(POINT) * point_c );
   voxel_obj_init( &(cloud->voxobj), point_c );
   cloud->id = 0; /* исправить */
+  cloud->material = WHITE; /* исправить */
 }
 
 int point_cloud_resize( POINT_CLOUD *cloud, int point_c ) {
