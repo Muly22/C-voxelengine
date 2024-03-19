@@ -21,11 +21,11 @@ ifeq ($(BUILD_STATUS),DEBUG)
 endif
 $(PREFIX_BIN)$(BUILD_NAME) : $(OBJ)
 	$(CC) $(OBJ) -o $(PREFIX_BIN)$(BUILD_NAME) $(FLUGS)
-	rm $(BUILD_NAME)
-	ln $(PREFIX_BIN)$(BUILD_NAME) $(BUILD_NAME)
+	ln -f $(PREFIX_BIN)$(BUILD_NAME) $(BUILD_NAME)
 
 $(PREFIX_OBJ)%.o : $(PREFIX_SRC)%.c
 	$(CC) -c $< -o $@ $(CFLUGS)
 
 clean :
-	rm -fr $(PREFIX_BIN)* $(BULID_NAME) $(PREFIX_OBJ)*.o
+	rm -fr $(PREFIX_BIN)* $(PREFIX_OBJ)*.o
+	rm $(BUILD_NAME)
