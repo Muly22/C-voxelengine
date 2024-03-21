@@ -6,7 +6,8 @@
 #include "point_cloud.h"
 #include "point.h"
 
-static POINT **point_world;
+static int point_world_len = 0;
+static POINT_CLOUD **point_world;
 
 bool point_world_add_cloud( POINT_CLOUD *cloud );
 

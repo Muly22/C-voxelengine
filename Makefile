@@ -2,7 +2,7 @@ BUILD_NAME=voxelengine
 BUILD_STATUS:=DEBUG
 
 CC=gcc
-OPT=2
+OPT=3
 
 PREFIX_SRC= ./src/
 PREFIX_OBJ= ./obj/
