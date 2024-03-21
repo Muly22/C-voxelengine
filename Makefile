@@ -8,8 +8,8 @@ PREFIX_SRC= ./src/
 PREFIX_OBJ= ./obj/
 PREFIX_BIN= ./bin/
 
-SRC= main.c octree.o point_cloud.c
-OBJ= main.o octree.o point_cloud.o
+SRC= main.c octree.o point_cloud.c voxel.c
+OBJ= main.o octree.o point_cloud.o voxel.o
 
 SRC:= $(addprefix $(PREFIX_SRC), $(SRC))
 OBJ:= $(addprefix $(PREFIX_OBJ), $(OBJ))

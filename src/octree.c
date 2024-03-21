@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-//
-#include "include/octree.h"
+
+#include "include/point_cloud.h"
+#include "include/point.h"
 
 static POINT point_orig( const POINT *points, int point_c ) {
   POINT res = {0};
@@ -46,7 +47,7 @@ static int point_ln( POINT *points, int point_c ) {
   return res;
 }
 
-static void octree( VOXEL_OBJ *voxobj, POINT *points, POINT *orig, int point_c, int depth, int x, int y, int z, int l, int b, int h) {
+static void octree( POINT *points, POINT *orig, int point_c, int depth, int x, int y, int z, int l, int b, int h ) {
   int count = 0;
   for (int i = 0; i < point_c; i++) {
     if (points[i].pos.x < l &&
@@ -68,38 +69,29 @@ static void octree( VOXEL_OBJ *voxobj, POINT *points, POINT *orig, int point_c, 
     int midx = (l + x) >> 1;
     int midy = (b + y) >> 1;
     int midz = (h + z) >> 1;
-    octree(voxobj, points, orig, point_c, depth - 1, midx, midy, midz, l, b, h);
-    octree(voxobj, points, orig, point_c, depth - 1, x, midy, midz, midx, b, h);
-    octree(voxobj, points, orig, point_c, depth - 1, x, y, midz, midx, midy, h);
-    octree(voxobj, points, orig, point_c, depth - 1, midx, y, midz, l, midy, h);
-    octree(voxobj, points, orig, point_c, depth - 1, midx, midy, z, l, b, midz);
-    octree(voxobj, points, orig, point_c, depth - 1, x, midy, z, midx, b, midz);
-    octree(voxobj, points, orig, point_c, depth - 1, x, y, z, midx, midy, midz);
-    octree(voxobj, points, orig, point_c, depth - 1, midx, y, z, l, midy, midz);
+    octree(points, orig, point_c, depth - 1, midx, midy, midz, l, b, h);
+    octree(points, orig, point_c, depth - 1, x, midy, midz, midx, b, h);
+    octree(points, orig, point_c, depth - 1, x, y, midz, midx, midy, h);
+    octree(points, orig, point_c, depth - 1, midx, y, midz, l, midy, h);
+    octree(points, orig, point_c, depth - 1, midx, midy, z, l, b, midz);
+    octree(points, orig, point_c, depth - 1, x, midy, z, midx, b, midz);
+    octree(points, orig, point_c, depth - 1, x, y, z, midx, midy, midz);
+    octree(points, orig, point_c, depth - 1, midx, y, z, l, midy, midz);
   }
 }
 
-void voxel_obj_init( VOXEL_OBJ *voxobj, int point_c ) {
-  voxobj->voxel_c = 0;
-  voxobj->voxels = malloc( sizeof(VOXEL) * point_c );
-}
-
-void voxel_obj_update( VOXEL_OBJ *voxobj, const POINT *points, const int point_c ) {
-  POINT orig = point_orig(points, point_c);
-  POINT *copy = malloc(sizeof(POINT) * point_c);
-  for (int i = 0; i < point_c; i++) {
-    copy[i].pos.x = points[i].pos.x;
-    copy[i].pos.y = points[i].pos.y;
-    copy[i].pos.z = points[i].pos.z;
+void point_cloud_update( POINT_CLOUD *cloud ) {
+  POINT orig = point_orig(cloud->points, cloud->point_c);
+  POINT *copy = malloc(sizeof(POINT) * cloud->point_c);
+  for (int i = 0; i < cloud->point_c; i++) {
+    copy[i].pos.x = (cloud->points)[i].pos.x;
+    copy[i].pos.y = (cloud->points)[i].pos.y;
+    copy[i].pos.z = (cloud->points)[i].pos.z;
   }
   //memcpy(copy, points, point_c);
-  point_norm(copy, &orig, point_c);
-  int depth = point_ln(copy, point_c);
+  point_norm(copy, &orig, cloud->point_c);
+  int depth = point_ln(copy, cloud->point_c);
   int bord = (int)(powf(2, depth) + 0.5f);
-  octree(voxobj, copy, &orig, point_c, depth, -bord, -bord, -bord, bord, bord, bord);
+  octree(copy, &orig, cloud->point_c, depth, -bord, -bord, -bord, bord, bord, bord);
   free(copy);
-}
-
-void voxel_obj_destroy( VOXEL_OBJ *voxobj ) {
-  free(voxobj->voxels);
 }

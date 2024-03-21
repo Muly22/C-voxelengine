@@ -9,6 +9,4 @@ typedef struct {
   double x, y, z;
 } VECTOR_D;
 
-
-
 #endif

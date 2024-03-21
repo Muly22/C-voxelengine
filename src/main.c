@@ -8,7 +8,7 @@
 
 int main() {
   POINT_CLOUD cloud;
-  point_cloud_init(&cloud, POINT_C);
+  point_cloud_init(&cloud, POINT_C, LOL);
   for (int i = 0; i < POINT_C; i++) {
     cloud.points[i].pos.x = rand()%1000000;
     cloud.points[i].pos.y = rand()%1000000;
