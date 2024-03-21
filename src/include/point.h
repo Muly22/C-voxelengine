@@ -6,6 +6,7 @@
 
 typedef struct {
   VECTOR_D pos;
+  char   color;
 } POINT;
 
 #endif

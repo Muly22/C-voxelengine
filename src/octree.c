@@ -47,7 +47,6 @@ static int point_ln( POINT *points, int point_c ) {
 }
 
 static void octree( VOXEL_OBJ *voxobj, POINT *points, POINT *orig, int point_c, int depth, int x, int y, int z, int l, int b, int h) {
-  //printf("%d: %d %d %d %d %d %d\n", depth, x,y,z,l,b,h); 
   int count = 0;
   for (int i = 0; i < point_c; i++) {
     if (points[i].pos.x < l &&
@@ -57,7 +56,6 @@ static void octree( VOXEL_OBJ *voxobj, POINT *points, POINT *orig, int point_c, 
         points[i].pos.y > y &&
         points[i].pos.z > z) {
       count++;
-      //printf("%d\n", count);
     }
   }
   if (!count) {
@@ -96,9 +94,6 @@ void voxel_obj_update( VOXEL_OBJ *voxobj, const POINT *points, const int point_c
   }
   //memcpy(copy, points, point_c);
   point_norm(copy, &orig, point_c);
-  //for (int i = 0; i < point_c; i++) {
-  //  printf("%f %f %f\n", copy[i].pos.x, copy[i].pos.y, copy[i].pos.z);
-  //}
   int depth = point_ln(copy, point_c);
   int bord = (int)(powf(2, depth) + 0.5f);
   octree(voxobj, copy, &orig, point_c, depth, -bord, -bord, -bord, bord, bord, bord);
