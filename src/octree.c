@@ -67,9 +67,9 @@ static void octree( VOXEL_OBJ *voxobj, POINT *points, POINT *orig, int point_c, 
     //printf("%d %d %d %d %d %d\n", x,y,z,l,b,h); 
   }
   else {
-    int midx = (l + x) / 2;
-    int midy = (b + y) / 2;
-    int midz = (h + z) / 2;
+    int midx = (l + x) >> 1;
+    int midy = (b + y) >> 1;
+    int midz = (h + z) >> 1;
     octree(voxobj, points, orig, point_c, depth - 1, midx, midy, midz, l, b, h);
     octree(voxobj, points, orig, point_c, depth - 1, x, midy, midz, midx, b, h);
     octree(voxobj, points, orig, point_c, depth - 1, x, y, midz, midx, midy, h);
@@ -86,7 +86,7 @@ void voxel_obj_init( VOXEL_OBJ *voxobj, int point_c ) {
   voxobj->voxels = malloc( sizeof(VOXEL) * point_c );
 }
 
-void voxel_obj_update( VOXEL_OBJ *voxobj, POINT *points, int point_c ) {
+void voxel_obj_update( VOXEL_OBJ *voxobj, const POINT *points, const int point_c ) {
   POINT orig = point_orig(points, point_c);
   POINT *copy = malloc(sizeof(POINT) * point_c);
   for (int i = 0; i < point_c; i++) {
