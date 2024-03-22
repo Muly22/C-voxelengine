@@ -13,7 +13,6 @@ typedef struct {
 } VOXEL;
 
 typedef struct {
-  int id;
   VECTOR_I xyz;
   VOXEL voxels[CHUNK_LEN][CHUNK_LEN][CHUNK_LEN];
 } CHUNK;
@@ -22,6 +21,6 @@ static CHUNK *voxel_world;
 
 bool chunk_generate();
 
-bool voxel_destroy( VOXEL **voxels, unsigned int voxel_c );
+void voxel_destroy( VOXEL **voxels, unsigned int *voxel_c );
 
 #endif

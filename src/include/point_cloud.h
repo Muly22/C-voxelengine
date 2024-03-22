@@ -6,6 +6,7 @@
 #include "point.h"
 
 typedef struct {
+  long int id;
   unsigned int voxel_c;
   unsigned int point_c;
   MATERIAL material;
