@@ -8,13 +8,13 @@ PREFIX_SRC= ./src/
 PREFIX_OBJ= ./obj/
 PREFIX_BIN= ./bin/
 
-SRC= main.c octree.o point_cloud.c voxel.c
-OBJ= main.o octree.o point_cloud.o voxel.o
+SRC= main.c octree.o point_cloud.c voxel.c core.c
+OBJ= main.o octree.o point_cloud.o voxel.o core.o
 
 SRC:= $(addprefix $(PREFIX_SRC), $(SRC))
 OBJ:= $(addprefix $(PREFIX_OBJ), $(OBJ))
 
-FLUGS+= -Werror -O$(OPT) -lm -lX11 
+FLUGS+= -Wall -O$(OPT) -lm -lX11 
 
 ifeq ($(BUILD_STATUS),DEBUG)
 	CFLUGS+= -D DEBUG
