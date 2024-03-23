@@ -10,6 +10,8 @@ bool point_cloud_init( POINT_CLOUD *cloud, int point_c, MATERIAL mater ) {
   #endif
   cloud->point_c = point_c;
   cloud->points = malloc( sizeof(POINT) * point_c );
+  cloud->voxel_c = 0;
+  cloud->voxels = NULL;
   cloud->material = mater;
   if (point_world_add_cloud(cloud))
     return 1;
@@ -19,27 +21,12 @@ bool point_cloud_init( POINT_CLOUD *cloud, int point_c, MATERIAL mater ) {
   return 0;
 }
 
-bool point_world_init() {
-  if (point_world)
-    return 1;
-  point_world = malloc(sizeof(POINT_CLOUD**));
-  point_world_len = 0;
-  #ifdef DEBUG
-    puts("INFO: point_world init");
-  #endif
-  return 0;
-}
-
 bool point_world_add_cloud( POINT_CLOUD *cloud ) {
-  //if (!realloc(point_world, sizeof(POINT_CLOUD**) * (point_world_len + 1))) {
-  //  puts("ERROR: realloc");
-  //  return 1;
-  //}
+  point_world = (POINT_CLOUD**) realloc(point_world, sizeof(POINT_CLOUD**) * (point_world_len + 1));
   if (!point_world) {
     puts("ERROR: point_world == NULL");
     return 1;
   }
-  printf("%x\n", point_world);
   point_world[point_world_len] = cloud;
   cloud->id = point_world_len;
   point_world_len++;
@@ -47,7 +34,8 @@ bool point_world_add_cloud( POINT_CLOUD *cloud ) {
 }
 
 bool point_cloud_resize( POINT_CLOUD *cloud, int point_c ) {
-  if (!realloc(cloud->points, sizeof(POINT) * point_c )) {
+  cloud->points = (POINT*) realloc(cloud->points, sizeof(POINT) * point_c);
+  if (!(cloud->points)) {
     puts("ERROR: realloc");
     return 1;
   }

@@ -14,11 +14,13 @@ OBJ= main.o octree.o point_cloud.o voxel.o core.o
 SRC:= $(addprefix $(PREFIX_SRC), $(SRC))
 OBJ:= $(addprefix $(PREFIX_OBJ), $(OBJ))
 
-FLUGS+= -Wall -O$(OPT) -lm -lX11 
+FLUGS+= -lm -lX11 
+CFLUGS+= -Wall -O$(OPT)
 
 ifeq ($(BUILD_STATUS),DEBUG)
 	CFLUGS+= -D DEBUG
 endif
+
 $(PREFIX_BIN)$(BUILD_NAME) : $(OBJ)
 	$(CC) $(OBJ) -o $(PREFIX_BIN)$(BUILD_NAME) $(FLUGS)
 	ln -f $(PREFIX_BIN)$(BUILD_NAME) $(BUILD_NAME)
