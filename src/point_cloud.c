@@ -46,4 +46,7 @@ void point_cloud_destroy( POINT_CLOUD *cloud ) {
   free(cloud->points);
   point_world[cloud->id] = NULL;
   voxel_destroy(cloud->voxels, &(cloud->voxel_c));
+  #ifdef DEBUG
+    puts("INFO: point_cloud destroy");
+  #endif
 }

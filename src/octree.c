@@ -47,7 +47,7 @@ static int point_ln( POINT *points, int point_c ) {
   return res;
 }
 
-static void octree( POINT *points, POINT *orig, int point_c, int depth, int x, int y, int z, int l, int b, int h ) {
+static void octree( POINT *points, POINT *orig, int point_c, VOXEL **voxels, unsigned int *voxel_c, int depth, int x, int y, int z, int l, int b, int h ) {
   int count = 0;
   for (int i = 0; i < point_c; i++) {
     if (points[i].pos.x < l &&
@@ -64,19 +64,20 @@ static void octree( POINT *points, POINT *orig, int point_c, int depth, int x, i
   }
   else if (count == 1 || !depth) {
     //printf("%d %d %d %d %d %d\n", x,y,z,l,b,h); 
+    voxel_fill(voxels, voxel_c, orig->pos.x + x, orig->pos.y + y, orig->pos.z + z, orig->pos.x + l, orig->pos.y + b, orig->pos.z + h);
   }
   else {
     int midx = (l + x) >> 1;
     int midy = (b + y) >> 1;
     int midz = (h + z) >> 1;
-    octree(points, orig, point_c, depth - 1, midx, midy, midz, l, b, h);
-    octree(points, orig, point_c, depth - 1, x, midy, midz, midx, b, h);
-    octree(points, orig, point_c, depth - 1, x, y, midz, midx, midy, h);
-    octree(points, orig, point_c, depth - 1, midx, y, midz, l, midy, h);
-    octree(points, orig, point_c, depth - 1, midx, midy, z, l, b, midz);
-    octree(points, orig, point_c, depth - 1, x, midy, z, midx, b, midz);
-    octree(points, orig, point_c, depth - 1, x, y, z, midx, midy, midz);
-    octree(points, orig, point_c, depth - 1, midx, y, z, l, midy, midz);
+    octree(points, orig, point_c, voxels, voxel_c, depth - 1, midx, midy, midz, l, b, h);
+    octree(points, orig, point_c, voxels, voxel_c, depth - 1, x, midy, midz, midx, b, h);
+    octree(points, orig, point_c, voxels, voxel_c, depth - 1, x, y, midz, midx, midy, h);
+    octree(points, orig, point_c, voxels, voxel_c, depth - 1, midx, y, midz, l, midy, h);
+    octree(points, orig, point_c, voxels, voxel_c, depth - 1, midx, midy, z, l, b, midz);
+    octree(points, orig, point_c, voxels, voxel_c, depth - 1, x, midy, z, midx, b, midz);
+    octree(points, orig, point_c, voxels, voxel_c, depth - 1, x, y, z, midx, midy, midz);
+    octree(points, orig, point_c, voxels, voxel_c, depth - 1, midx, y, z, l, midy, midz);
   }
 }
 
@@ -92,6 +93,6 @@ void point_cloud_update( POINT_CLOUD *cloud ) {
   point_norm(copy, &orig, cloud->point_c);
   int depth = point_ln(copy, cloud->point_c);
   int bord = (int)(powf(2, depth) + 0.5f);
-  octree(copy, &orig, cloud->point_c, depth, -bord, -bord, -bord, bord, bord, bord);
+  octree(copy, &orig, cloud->point_c, cloud->voxels, &(cloud->voxel_c), depth, -bord, -bord, -bord, bord, bord, bord);
   free(copy);
 }
