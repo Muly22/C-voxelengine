@@ -19,6 +19,10 @@ int main() {
     point_world[0]->points[i].pos.y = rand()%100;
     point_world[0]->points[i].pos.z = rand()%100;
   }
-  point_cloud_update(cloud);
+  if (point_cloud_update(cloud) < 0) {
+    puts("ERROR: point cloud update");
+    return -1;
+  }
   point_world_destroy();
+  return 0;
 }

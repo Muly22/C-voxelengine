@@ -4,19 +4,20 @@
 
 #include "include/voxel_world.h"
 
-void voxel_destroy( VOXEL **voxels, unsigned int *voxel_c ) {
+int voxel_destroy( VOXEL **voxels, unsigned int *voxel_c ) {
   if (!voxels)
-    return;
+    return -1;
   for (int i = 0; i < *voxel_c; i++) {
     (voxels[i])->filled = 0;
     (voxels[i])->color = 0x00;
   }
   *voxel_c = 0;
+  return 0;
 }
 
-void voxel_fill( VOXEL **voxels, unsigned int *voxel_c, long int x, long int y, long z, long int l, long int b, long int h ) {
+int voxel_fill( VOXEL **voxels, unsigned int *voxel_c, long int x, long int y, long z, long int l, long int b, long int h ) {
   if (x > l || y > b || z > h)
-    return;
+    return -1;
   for (int i = x; i < l; i++) {
     for (int j = y; j < b; j++) {
       for (int k = z; k < h; k++) {
@@ -25,9 +26,12 @@ void voxel_fill( VOXEL **voxels, unsigned int *voxel_c, long int x, long int y, 
         vox->filled = 1;
         vox->color  = 0xFF;
         voxels = realloc(voxels, sizeof(VOXEL**) * (*voxel_c + 1));
+        if (!voxels)
+          return -1;
         voxels[*voxel_c] = vox;
         (*voxel_c)++;
       }
     }
   }
+  return 0;
 }

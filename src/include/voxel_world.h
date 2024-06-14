@@ -2,7 +2,7 @@
 #define VOXEL_WORLD_H
 
 #include <stdbool.h>
-//
+
 #include "vector.h"
 
 #define CHUNK_LEN 256
@@ -23,8 +23,8 @@ void chunk_init( CHUNK *chunk );
 
 bool chunk_generate();
 
-void voxel_destroy( VOXEL **voxels, unsigned int *voxel_c );
+int voxel_destroy( VOXEL **voxels, unsigned int *voxel_c );
 
-void voxel_fill( VOXEL **voxels, unsigned int *voxel_c, long int x, long int y, long z, long int l, long int b, long int h );
+int voxel_fill( VOXEL **voxels, unsigned int *voxel_c, long int x, long int y, long z, long int l, long int b, long int h );
 
 #endif
