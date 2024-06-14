@@ -63,7 +63,7 @@ static void octree( POINT *points, POINT *orig, int point_c, VOXEL **voxels, uns
     return;
   }
   else if (count == 1 || !depth) {
-    //printf("%d %d %d %d %d %d\n", x,y,z,l,b,h); 
+    printf("%d %d %d %d %d %d\n", x,y,z,l,b,h); 
     voxel_fill(voxels, voxel_c, orig->pos.x + x, orig->pos.y + y, orig->pos.z + z, orig->pos.x + l, orig->pos.y + b, orig->pos.z + h);
   }
   else {
@@ -93,6 +93,7 @@ void point_cloud_update( POINT_CLOUD *cloud ) {
   point_norm(copy, &orig, cloud->point_c);
   int depth = point_ln(copy, cloud->point_c);
   int bord = (int)(powf(2, depth) + 0.5f);
+  printf("%d %d %d\n", (int)orig.pos.x, (int)orig.pos.y, (int)orig.pos.z); 
   octree(copy, &orig, cloud->point_c, cloud->voxels, &(cloud->voxel_c), depth, -bord, -bord, -bord, bord, bord, bord);
   free(copy);
 }

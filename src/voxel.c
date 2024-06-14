@@ -1,12 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-//
-#include "include/voxel_world.h"
 
-void chunk_init( CHUNK *chunk) {
-  //memset(chunk->xyz, 0, sizeof(VECTOR_I));
-}
+#include "include/voxel_world.h"
 
 void voxel_destroy( VOXEL **voxels, unsigned int *voxel_c ) {
   if (!voxels)
@@ -19,11 +15,13 @@ void voxel_destroy( VOXEL **voxels, unsigned int *voxel_c ) {
 }
 
 void voxel_fill( VOXEL **voxels, unsigned int *voxel_c, long int x, long int y, long z, long int l, long int b, long int h ) {
-  for (int i = x; i < l; x++) {
+  if (x > l || y > b || z > h)
+    return;
+  for (int i = x; i < l; i++) {
     for (int j = y; j < b; j++) {
       for (int k = z; k < h; k++) {
-        /* исправить как появятся чанки chunk_search */
-        VOXEL *vox = &voxel_world->voxels[i][j][k];
+        /*TODO: исправить как появятся чанки chunk_search */
+        VOXEL *vox = &(voxel_world.voxels[i][j][k]);
         vox->filled = 1;
         vox->color  = 0xFF;
         voxels = realloc(voxels, sizeof(VOXEL**) * (*voxel_c + 1));

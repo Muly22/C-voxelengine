@@ -17,7 +17,7 @@ typedef struct {
   VOXEL voxels[CHUNK_LEN][CHUNK_LEN][CHUNK_LEN];
 } CHUNK;
 
-extern CHUNK *voxel_world;
+extern CHUNK voxel_world;
 
 void chunk_init( CHUNK *chunk );
 

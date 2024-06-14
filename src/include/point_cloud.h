@@ -14,9 +14,9 @@ typedef struct {
   POINT *points;
 } POINT_CLOUD;
 
-bool point_cloud_init( POINT_CLOUD *cloud, int point_c, MATERIAL mater );
+int point_cloud_init( POINT_CLOUD **cloud, int point_c, MATERIAL mater );
 
-bool point_cloud_resize( POINT_CLOUD *cloud, int point_c );
+int point_cloud_resize( POINT_CLOUD *cloud, int point_c );
 
 void point_cloud_update( POINT_CLOUD *cloud );
 
