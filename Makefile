@@ -22,10 +22,12 @@ ifeq ($(BUILD_STATUS),DEBUG)
 endif
 
 $(PREFIX_BIN)$(BUILD_NAME) : $(OBJ)
+	mkdir -p $(PREFIX_BIN)
 	$(CC) $(OBJ) -o $(PREFIX_BIN)$(BUILD_NAME) $(FLUGS)
 	ln -f $(PREFIX_BIN)$(BUILD_NAME) $(BUILD_NAME)
 
 $(PREFIX_OBJ)%.o : $(PREFIX_SRC)%.c
+	mkdir -p $(PREFIX_OBJ)
 	$(CC) -c $< -o $@ $(CFLUGS)
 
 clean :
